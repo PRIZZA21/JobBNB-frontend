@@ -4,6 +4,7 @@ import JobBoard from './pages/JobBoard';
 import Auth from './pages/Auth';
 import CreateJob from './pages/CreateJob';
 import { Briefcase, User, LogOut, PlusCircle } from 'lucide-react';
+import AddProfileInfo from './pages/AddProfileInfo';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -47,6 +48,7 @@ function App() {
         <Routes>
           <Route path="/" element={<JobBoard />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/add-profile-info" element={<AddProfileInfo />}/>
           <Route path="/post-job" element={<CreateJob />} />
         </Routes>
       </main>

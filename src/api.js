@@ -7,24 +7,31 @@ const api = axios.create({
     }
 });
 
-// Add request interceptor to attach JWT token
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
+api.interceptors.request.use(
+    (config) => {
+        // Skip token for auth APIs
+        if (config.url?.startsWith('/auth')) {
+            return config;
+        }
 
-// Add response interceptor to handle errors globally
-api.interceptors.response.use((response) => response, (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
-        // Optional: clear local storage if token is invalid
-        // localStorage.removeItem('token');
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401 || error.response?.status === 403) {
+            // localStorage.removeItem('token');
+        }
+        return Promise.reject(error);
     }
-    return Promise.reject(error);
-});
+);
 
 export default api;
