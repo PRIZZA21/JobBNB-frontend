@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
-const AddProfileInfo = () => {
+const AddProfileInfo = ({ setToken }) => {
   const { authData, setAuthData } = useAuth();
   const [error, setError] = useState("");
 
@@ -18,7 +18,9 @@ const AddProfileInfo = () => {
     try {
       const endpoint = "/auth/register";
       const response = await api.post(endpoint, authData);
-      localStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("token", response.data.data.accessToken);
+      console.log(localStorage.getItem("token"));
+      setToken(response.data.data.accessToken);
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Authentication failed");

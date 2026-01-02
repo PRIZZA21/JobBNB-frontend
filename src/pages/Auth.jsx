@@ -5,7 +5,7 @@ import { User, Mail, Lock, ShieldCheck } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
-const Auth = () => {
+const Auth = ({ setToken }) => {
   const [isLogin, setIsLogin] = useState(true);
   const { authData, setAuthData } = useAuth();
   const [error, setError] = useState("");
@@ -19,7 +19,8 @@ const Auth = () => {
       try {
         const endpoint = "/auth/login";
         const response = await api.post(endpoint, authData);
-        localStorage.setItem("token", response.data.accessToken);
+        localStorage.setItem("token", response.data.data.accessToken);
+        setToken(response.data.data.accessToken);
         navigate("/");
       } catch (err) {
         setError(err.response?.data?.message || "Authentication failed");
@@ -213,7 +214,7 @@ const Auth = () => {
               fontWeight: 600,
             }}
           >
-            {isLogin ? "Register" : "Login"}
+            {isLogin ? "Sign up" : "Sign in"}
           </button>
         </p>
       </motion.div>
