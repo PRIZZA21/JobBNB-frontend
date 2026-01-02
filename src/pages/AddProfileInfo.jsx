@@ -18,8 +18,8 @@ const AddProfileInfo = ({ setToken }) => {
     try {
       const endpoint = "/auth/register";
       const response = await api.post(endpoint, authData);
-      localStorage.setItem("token", response.data.data.accessToken);
-      console.log(localStorage.getItem("token"));
+      localStorage.setItem('accessToken', response.data.data.accessToken);
+      localStorage.setItem('refreshToken', response.data.data.refreshToken);
       setToken(response.data.data.accessToken);
       navigate("/");
     } catch (err) {

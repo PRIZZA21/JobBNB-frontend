@@ -8,10 +8,11 @@ import ProfilePage from './pages/Profile';
 import MainLayout from './layouts/MainLayout';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [token, setToken] = useState(localStorage.getItem('accessToken'));
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     setToken(null);
     window.location.href = '/';
   };
