@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { User, Mail, Lock, ShieldCheck } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import GoogleLogin from "../components/GoogleLogin";
 
 const Auth = ({ setToken }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -19,8 +20,8 @@ const Auth = ({ setToken }) => {
       try {
         const endpoint = "/auth/login";
         const response = await api.post(endpoint, authData);
-        localStorage.setItem('accessToken', response.data.data.accessToken);
-        localStorage.setItem('refreshToken', response.data.data.refreshToken);
+        localStorage.setItem("accessToken", response.data.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.data.refreshToken);
         setToken(response.data.data.accessToken);
         navigate("/");
       } catch (err) {
@@ -196,6 +197,31 @@ const Auth = ({ setToken }) => {
           </button>
         </form>
 
+        {isLogin && (
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "1rem",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => navigate("/forgot-password")}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--primary)",
+                fontSize: "0.9rem",
+                cursor: "pointer",
+                fontWeight: 500,
+                padding: 0,
+              }}
+            >
+              Forgot password?
+            </button>
+          </div>
+        )}
+
         <p
           style={{
             textAlign: "center",
@@ -218,6 +244,7 @@ const Auth = ({ setToken }) => {
             {isLogin ? "Sign up" : "Sign in"}
           </button>
         </p>
+        {isLogin && <GoogleLogin setToken={setToken} />}
       </motion.div>
     </div>
   );

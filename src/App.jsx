@@ -6,6 +6,8 @@ import CreateJob from "./pages/CreateJob";
 import AddProfileInfo from "./pages/AddProfileInfo";
 import ProfilePage from "./pages/Profile";
 import MainLayout from "./layouts/MainLayout";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 import api from "./api";
 
@@ -63,6 +65,8 @@ function App() {
           path="/add-profile-info"
           element={<AddProfileInfo setToken={setToken} />}
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Routes WITH navbar */}
         <Route element={<MainLayout token={token} profile={user} avatarColor={avatarColor} />}>
