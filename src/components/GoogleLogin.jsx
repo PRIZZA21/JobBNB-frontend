@@ -4,7 +4,7 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-const GoogleLogin = ({ setToken }) => {
+const GoogleLogin = ({ setToken, isLogin }) => {
   const navigate = useNavigate();
 
   const { authData } = useAuth();
@@ -39,7 +39,7 @@ const GoogleLogin = ({ setToken }) => {
         onError={() => alert("Google login failed")}
         logo_alignment="center"
         shape="circle"
-        text="continue_with"
+        text={isLogin ? "continue_with" : "signup_with"}
       />
     </div>
   );

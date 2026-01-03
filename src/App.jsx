@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import JobBoard from "./pages/JobBoard";
 import Auth from "./pages/Auth";
 import CreateJob from "./pages/CreateJob";
-import AddProfileInfo from "./pages/AddProfileInfo";
 import ProfilePage from "./pages/Profile";
 import MainLayout from "./layouts/MainLayout";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import JobOverview from "./pages/JobOverview";
 
 import api from "./api";
 
@@ -61,10 +61,6 @@ function App() {
       <Routes>
         {/* Routes WITHOUT navbar */}
         <Route path="/auth" element={<Auth setToken={setToken} />} />
-        <Route
-          path="/add-profile-info"
-          element={<AddProfileInfo setToken={setToken} />}
-        />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
@@ -72,6 +68,7 @@ function App() {
         <Route element={<MainLayout token={token} profile={user} avatarColor={avatarColor} />}>
           <Route path="/" element={<JobBoard />} />
           <Route path="/post-job" element={<CreateJob />} />
+          <Route path="/job/:jobId" element={<JobOverview />} />
           <Route
             path="/profile"
             element={<ProfilePage onLogout={handleLogout} profile={user} setProfile={setUser} avatarColor={avatarColor} loading={loading} />}

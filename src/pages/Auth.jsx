@@ -16,19 +16,15 @@ const Auth = ({ setToken }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (isLogin) {
-      try {
-        const endpoint = "/auth/login";
-        const response = await api.post(endpoint, authData);
-        localStorage.setItem("accessToken", response.data.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.data.refreshToken);
-        setToken(response.data.data.accessToken);
-        navigate("/");
-      } catch (err) {
-        setError(err.response?.data?.message || "Authentication failed");
-      }
-    } else {
-      navigate("/add-profile-info");
+    try {
+      const endpoint = isLogin ? "/auth/login" : "/auth/register";
+      const response = await api.post(endpoint, authData);
+      localStorage.setItem("accessToken", response.data.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.data.refreshToken);
+      setToken(response.data.data.accessToken);
+      navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Authentication failed");
     }
   };
 
@@ -66,6 +62,35 @@ const Auth = ({ setToken }) => {
           onSubmit={handleSubmit}
           style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
         >
+          {!isLogin && (
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <label style={{ flex: 1 }}>
+                <input
+                  type="radio"
+                  name="role"
+                  value="USER"
+                  checked={authData.role === "USER"}
+                  onChange={(e) =>
+                    setAuthData({ ...authData, role: e.target.value })
+                  }
+                />{" "}
+                Candidate
+              </label>
+              <label style={{ flex: 1 }}>
+                <input
+                  type="radio"
+                  name="role"
+                  value="EMPLOYER"
+                  checked={authData.role === "EMPLOYER"}
+                  onChange={(e) =>
+                    setAuthData({ ...authData, role: e.target.value })
+                  }
+                />{" "}
+                Employer
+              </label>
+            </div>
+          )}
+
           {!isLogin && (
             <div style={{ position: "relative" }}>
               <User
@@ -147,35 +172,6 @@ const Auth = ({ setToken }) => {
             />
           </div>
 
-          {!isLogin && (
-            <div style={{ display: "flex", gap: "1rem" }}>
-              <label style={{ flex: 1 }}>
-                <input
-                  type="radio"
-                  name="role"
-                  value="USER"
-                  checked={authData.role === "USER"}
-                  onChange={(e) =>
-                    setAuthData({ ...authData, role: e.target.value })
-                  }
-                />{" "}
-                Candidate
-              </label>
-              <label style={{ flex: 1 }}>
-                <input
-                  type="radio"
-                  name="role"
-                  value="EMPLOYER"
-                  checked={authData.role === "EMPLOYER"}
-                  onChange={(e) =>
-                    setAuthData({ ...authData, role: e.target.value })
-                  }
-                />{" "}
-                Employer
-              </label>
-            </div>
-          )}
-
           {error && (
             <p
               style={{
@@ -244,7 +240,7 @@ const Auth = ({ setToken }) => {
             {isLogin ? "Sign up" : "Sign in"}
           </button>
         </p>
-        {isLogin && <GoogleLogin setToken={setToken} />}
+        <GoogleLogin setToken={setToken} />
       </motion.div>
     </div>
   );
