@@ -1,40 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import api from "../api";
-import { tr } from "framer-motion/client";
 
-const ProfilePage = ({ onLogout }) => {
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [avatarColor, setAvatarColor] = useState("");
-
+const ProfilePage = ({ onLogout, profile, setProfile, avatarColor, loading }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [authData, setAuthData] = useState({});
-
-  useEffect(() => {
-    fetchProfile();
-  }, []);
-
-  const fetchProfile = async () => {
-    try {
-      const response = await api.get("/user");
-      setProfile(response.data.data);
-
-      const colors = [
-        "#F87171",
-        "#FBBF24",
-        "#34D399",
-        "#60A5FA",
-        "#A78BFA",
-        "#F472B6",
-      ];
-      setAvatarColor(colors[Math.floor(Math.random() * colors.length)]);
-    } catch (err) {
-      console.error("Failed to fetch profile:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getInitials = (name) => {
     if (!name) return "";
@@ -49,9 +19,8 @@ const ProfilePage = ({ onLogout }) => {
     e.preventDefault();
 
     try {
-      await api.put("/user", authData);
-      setLoading(true);
-      fetchProfile();
+      const response = await api.put("/user", authData);
+      setProfile(response.data.data);
     } catch (error) {
       console.error("Failed to update profile:", error);
     } finally {
